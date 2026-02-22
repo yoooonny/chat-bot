@@ -5,7 +5,12 @@ import { extractTextFromFile } from '@/lib/utils/extraction';
 import { chunkText, generateHash } from '@/lib/utils/text';
 
 export async function POST(req: NextRequest) {
+    console.log('--- Upload API Called ---');
     try {
+        if (!req.body) {
+            console.error('No request body');
+            return NextResponse.json({ error: 'No request body' }, { status: 400 });
+        }
         const formData = await req.formData();
         const file = formData.get('file') as File | null;
 
@@ -41,12 +46,14 @@ export async function POST(req: NextRequest) {
             });
 
         if (uploadError) {
-            console.error('Storage error details:', uploadError);
+            console.error('Supabase Storage Error:', uploadError);
             return NextResponse.json({
                 error: 'Failed to upload to storage',
-                details: uploadError
+                details: uploadError.message
             }, { status: 500 });
         }
+
+        console.log('File uploaded to storage:', filePath);
 
         // 3. Extract Text
         const extractedText = await extractTextFromFile(buffer, file.type, extension);

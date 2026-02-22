@@ -1,4 +1,7 @@
-const pdfParse = require('pdf-parse');
+// @ts-ignore
+import * as _pdfParse from 'pdf-parse';
+// @ts-ignore
+const pdfParse = _pdfParse.default || _pdfParse;
 import officeParser from 'officeparser';
 import { Readable } from 'stream';
 import csvParser from 'csv-parser';
