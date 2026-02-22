@@ -6,11 +6,13 @@ if (!apiKey) {
     console.warn('WARNING: GEMINI_API_KEY is not set in environment variables.');
 }
 
-export const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+// apiKey 없이도 빌드 오류가 발생하지 않게 placeholder를 사용
+// 실제 API 호출 시에는 런타임 에러가 발생함
+export const ai = new GoogleGenAI({ apiKey: apiKey || 'placeholder' });
 
 export async function getEmbedding(text: string) {
-    if (!ai) {
-        throw new Error('Gemini API key is not configured. Please set GEMINI_API_KEY in environment variables.');
+    if (!process.env.GEMINI_API_KEY) {
+        throw new Error('GEMINI_API_KEY is not configured in environment variables.');
     }
     try {
         const response = await ai.models.embedContent({
