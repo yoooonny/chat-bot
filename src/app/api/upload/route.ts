@@ -4,6 +4,9 @@ import { getEmbedding } from '@/lib/gemini';
 import { extractTextFromFile } from '@/lib/utils/extraction';
 import { chunkText, generateHash } from '@/lib/utils/text';
 
+// Vercel 서버리스에서 Node.js 런타임을 명시적으로 사용
+export const runtime = 'nodejs';
+
 export async function POST(req: NextRequest) {
     console.log('--- Upload API Called ---');
     try {

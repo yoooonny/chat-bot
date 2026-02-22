@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { getEmbedding, ai } from '@/lib/gemini';
 
+export const runtime = 'nodejs';
+
 export async function POST(req: NextRequest) {
     try {
         const { messages } = await req.json();

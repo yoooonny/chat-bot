@@ -50,7 +50,14 @@ export function FileUpload({ onUploadSuccess }: { onUploadSuccess?: () => void }
                 body: formData,
             });
 
-            const data = await res.json();
+            const text = await res.text();
+            let data: any = {};
+            try {
+                data = text ? JSON.parse(text) : {};
+            } catch {
+                // JSON 파싱 실패 (빈 응답 등) 시 상태 코드 기반으로 에러 처리
+                data = { error: `서버 오류 (HTTP ${res.status})` };
+            }
 
             if (!res.ok) {
                 throw new Error(data.error || '파일 업로드 실패');
